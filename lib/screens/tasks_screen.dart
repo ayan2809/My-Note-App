@@ -1,14 +1,31 @@
 import 'package:my_note_app/screens/add_task_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:my_note_app/widgets/task_list.dart';
+import 'package:my_note_app/models/task.dart';
 
-class TasksScreen extends StatelessWidget {
+class TasksScreen extends StatefulWidget {
+
+
+  @override
+  _TasksScreenState createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
+  List<Task> tasks = [
+    Task(name: 'Buy Milk'),
+    Task(name: 'Buy Eggs'),
+    Task(name: 'Buy Bread'),
+  ];
 
   Widget buildBottomSheet (BuildContext context){
-    return AddTaskScreen();
+    return AddTaskScreen((newTaskTitle){
+      setState(() {
+        tasks.add(Task(name: newTaskTitle));
+      });
+      Navigator.pop(context);
+      // print(newTaskTitle);
+    });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +68,7 @@ class TasksScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '12 Tasks',
+                    '${tasks.length} Tasks',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -69,7 +86,7 @@ class TasksScreen extends StatelessWidget {
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20)),
                 ),
-                child: TaskList(),
+                child: TaskList(tasks),
               ),
             )
           ]),
